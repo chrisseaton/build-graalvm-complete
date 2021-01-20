@@ -112,7 +112,7 @@ Dir.chdir(dir) do
 
     case i
     when /espresso-.*/
-      rebuildable = nil # no rebuildable?
+      rebuildable = 'java'
       # When rebuilding with espresso we need to add it to the classpath manually, according to post-install instructions
       rebuild_extra.push '-cp', "#{complete}/#{path_extra}#{jre_extra}/lib/graalvm/lib-espresso.jar"
     when /llvm-.*/
@@ -133,7 +133,13 @@ Dir.chdir(dir) do
 
   rebuildables.each do |r|
     puts "Rebuilding #{r}"
-    system "#{complete}/#{path_extra}bin/gu", 'rebuild-images', r, *rebuild_extra, exception: true
+    case r
+    when 'java'
+      # https://github.com/oracle/graal/issues/3134#issuecomment-763599584
+      system "#{complete}/#{path_extra}bin/native-image", '--macro:espresso-library', *rebuild_extra, exception: true
+    else
+      system "#{complete}/#{path_extra}bin/gu", 'rebuild-images', r, *rebuild_extra, exception: true
+    end
   end
 
   phase2.each do |i|
