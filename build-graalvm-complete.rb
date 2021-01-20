@@ -103,6 +103,7 @@ Dir.chdir(dir) do
   # phase1 installables can go into native images, phase2 installables cannot,
   # so they must be installed after native images are rebuilt
   phase2, phase1 = installables.partition do |i|
+    # https://github.com/oracle/graal/issues/3135
     i =~ /wasm-.*/
   end
 
