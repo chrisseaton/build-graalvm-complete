@@ -65,7 +65,7 @@ Dir.chdir(dir) do
   raise 'could not find the extracted directory' if extracted.nil?
   raise 'multiple extracted directories found' unless rest.empty?
 
-  complete = "#{dir}-complete"
+  complete = "#{File.basename(dir)}-complete"
   FileUtils.mv extracted, complete
 
   if RUBY_PLATFORM.include?('darwin')
