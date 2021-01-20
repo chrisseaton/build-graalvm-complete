@@ -76,6 +76,12 @@ Dir.chdir(dir) do
     path_extra = ''
   end
 
+  if tarball.include?('java8')
+    jre_extra = 'jre/'
+  else
+    jre_extra = ''
+  end
+
   installables = Dir.glob('*.jar')
 
   # native-image and llvm need to be installed before some languages
@@ -106,7 +112,7 @@ Dir.chdir(dir) do
     when /espresso-.*/
       rebuildable = nil # no rebuildable?
       # When rebuilding with espresso we need to add it to the classpath manually, according to post-install instructions
-      rebuild_extra.push '-cp', "#{complete}/#{path_extra}jre/lib/graalvm/lib-espresso.jar"
+      rebuild_extra.push '-cp', "#{complete}/#{path_extra}#{jre_extra}/lib/graalvm/lib-espresso.jar"
     when /llvm-.*/
       rebuildable = 'llvm'
     when /python-.*/
@@ -114,7 +120,7 @@ Dir.chdir(dir) do
     when /ruby-.*/
       # Ruby has a post-install hook according to the post-install instructions
       puts 'Rebuilding Ruby C extensions...'
-      system "#{complete}/#{path_extra}jre/languages/ruby/lib/truffle/post_install_hook.sh", exception: true
+      system "#{complete}/#{path_extra}#{jre_extra}/languages/ruby/lib/truffle/post_install_hook.sh", exception: true
       rebuildable = 'ruby'
     else
       rebuildable = nil
