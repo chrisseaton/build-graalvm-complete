@@ -83,14 +83,16 @@ Dir.chdir(dir) do
     rebuildables.push rebuildable if rebuildable
   end
 
-  rebuildables.each do |r|
-    puts "Rebuilding #{r}"
-    case r
-    when 'java'
-      # https://github.com/oracle/graal/issues/3134#issuecomment-763599584
-      system "#{complete}/#{path_extra}bin/native-image", '--macro:espresso-library', *rebuild_extra, exception: true
-    else
-      system "#{complete}/#{path_extra}bin/gu", 'rebuild-images', r, *rebuild_extra, exception: true
+  if installables.any? { |i| i =~ /native-image-*./ }
+    rebuildables.each do |r|
+      puts "Rebuilding #{r}"
+      case r
+      when 'java'
+        # https://github.com/oracle/graal/issues/3134#issuecomment-763599584
+        system "#{complete}/#{path_extra}bin/native-image", '--macro:espresso-library', *rebuild_extra, exception: true
+      else
+        system "#{complete}/#{path_extra}bin/gu", 'rebuild-images', r, *rebuild_extra, exception: true
+      end
     end
   end
 
