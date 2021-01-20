@@ -6,9 +6,11 @@
 
 # You should have a directory called something like
 # graalvm-ce-java8-darwin-amd64-21.0.0 that contains the tarball and whatever
-# installables you want. You need to download these yourself. For example:
+# installables and other tools you want. You need to download these yourself.
+# For example:
 
 #   % ls graalvm-ce-java8-darwin-amd64-21.0.0/*
+#   graalvm-ce-java8-darwin-amd64-21.0.0/c1visualizer-1.7.zip
 #   graalvm-ce-java8-darwin-amd64-21.0.0/espresso-installable-java8-darwin-amd64-21.0.0.jar
 #   graalvm-ce-java8-darwin-amd64-21.0.0/graalvm-ce-java8-darwin-amd64-21.0.0.tar.gz
 #   graalvm-ce-java8-darwin-amd64-21.0.0/llvm-toolchain-installable-java8-darwin-amd64-21.0.0.jar
@@ -137,6 +139,11 @@ Dir.chdir(dir) do
   phase2.each do |i|
     puts "Installing #{i}..."
     system "#{complete}/#{path_extra}bin/gu", 'install', '-L', i, exception: true
+  end
+
+  Dir.glob('*.zip') do |zip|
+    puts "Extracting #{zip}..."
+    system 'unzip', zip, '-d', complete
   end
 
   system 'tar', '-zcf', "../#{complete}.tar.gz", complete, exception: true
