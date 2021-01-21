@@ -29,7 +29,9 @@ Now you'll have a complete tarball with all installables installed, and all nati
 % du -h graalvm-ce-java8-darwin-amd64-21.0.0-complete.tar.gz
 784M	graalvm-ce-java8-darwin-amd64-21.0.0-complete.tar.gz
 % tar -zxf graalvm-ce-java8-darwin-amd64-21.0.0-complete.tar.gz
-% ./graalvm-ce-java8-darwin-amd64-21.0.0-complete/Contents/Home/bin/polyglot --version:graalvm
+% graalvm-ce-java8-darwin-amd64-21.0.0-complete/Contents/Home/setup.sh
+...
+% graalvm-ce-java8-darwin-amd64-21.0.0-complete/Contents/Home/bin/polyglot --version:graalvm
 GraalVM CE Native Polyglot Engine Version 21.0.0
 Java Version 1.8.0_282
 Java VM Version GraalVM 21.0.0 Java 8 CE
